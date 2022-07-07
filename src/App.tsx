@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import AddTodo from "./components/AddTodo";
+import TodoList from "./components/TodoList";
+import TODO_LIST from "./db/TodoList";
+import Todo from "./model/Todo";
 
-function App() {
+
+const App = () => {
+
+  const [todoList, setTodoList] = useState(TODO_LIST)
+
+  const addNewTodo = (todo: string) => {
+    const todoItem = new Todo(todo)
+    setTodoList(prevData => {
+      return [...prevData, todoItem]
+    })
+  }
+
+  const clearAll = () => {
+    setTodoList([])
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1 className="fw-bold text-primary mt-3">Todo List</h1>
+      <AddTodo onAddNewItem={addNewTodo} onClearData={clearAll}/>
+      <TodoList list={todoList} />
     </div>
   );
 }
